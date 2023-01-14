@@ -240,6 +240,9 @@ public class  JackTokenizer {
         return currentToken.substring(1, currentToken.length() - 1);
     }
 
+    public String getToken(){
+        return this.currentToken;
+    }
 }
 
 
