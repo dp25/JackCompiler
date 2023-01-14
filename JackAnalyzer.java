@@ -1,53 +1,38 @@
 import java.io.File;
 import java.io.IOException;
 
+
 public class JackAnalyzer {
 
     public static void main(String[] args) throws IOException {
-        String filename = args[0];
-        File file = new File(filename);
-        String[] children = null;
-        String outputName = null; 
+       // read the file
+       String file = args[0];
+       System.out.println("the input = " + file);
+       // creating the output
+       File check = new File(file);
+       System.out.println("the check = " + check.getAbsolutePath());
 
-        if (file.isFile()) {
-            if (filename.contains(".jack")) {
-                children = new String[1];
-                children[0] = filename;
-                outputName = filename.split("[.]")[0] + ".asm";
-            } else {
-                System.out.println("Not a jack file");
-                return;
-            }
-        } else if (file.isDirectory()) {
-            String[] outputNames = file.getAbsolutePath().split("/");
-            outputName = outputNames[outputNames.length - 2] + ".asm";
-            children = file.list();
-        } else {
-            System.out.println(outputName);
-            outputName = null;
-            System.out.println("Ilegal name");
-            return;
-        }
 
-        boolean containsJack = false;
-        for (String child : children) {
-            if (child.contains(".jack")) {
-                containsJack = true;
-                break;
-            }
-        }
+       // checks whether th file is a directory or a single file 
+        if (check.isDirectory()){
+     
+            File[] directoryListing = check.listFiles();
 
-        if (!containsJack) {
-            System.out.println("No jack file in this directory");
-            return;
-        }
-        
-        for (String child : children) {
-            if (child.matches("^.*jack$")) {
-                System.out.printf("Writing %s\n", child);
-                CompilationEngine engine = new CompilationEngine(child);
-                engine.compileClass();
+            for (File f : directoryListing){
+                System.out.println("File f name is: " + f.getName());
+                if(f.getName().endsWith(".jack")){
+                    System.out.println("good");
+                    String outputName = f.getAbsolutePath().replace(".jack", ".xml");
+                    File output = new File(outputName);
+                    CompilationEngine e = new CompilationEngine(f,output);
+                    e.compileClass();
+                }
             }
+        } else{
+            String outputName = file.replace(".jack", ".xml");
+            File output = new File(outputName);
+            CompilationEngine e = new CompilationEngine(check,output);
+            e.compileClass();
         }
     }
     

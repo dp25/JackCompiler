@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class  JackTokenizer {
     private File codeFile;
-    private Scanner scanner;
+    private final Scanner scanner;
     private String currentToken;
 
     public enum TokenType{
@@ -43,7 +43,7 @@ public class  JackTokenizer {
     // opens the input .jack file and gets readt to tokenize it 
     public JackTokenizer (File file) throws FileNotFoundException {
         this.codeFile = file;
-        this.scanner = new Scanner(file);
+        this.scanner = new Scanner(codeFile);
         scanner.useDelimiter("//.*|\\s+");
         this.currentToken = "";
     }

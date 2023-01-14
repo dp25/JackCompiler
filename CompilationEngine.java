@@ -9,12 +9,10 @@ public class CompilationEngine {
     private FileWriter writer;
     private JackTokenizer tokenizer;  // input
     private String tab = "";
-    //private String tabBack = "";
 
-    public CompilationEngine(String input) throws IOException{
-        this.tokenizer =new JackTokenizer(new File(input));
-        String outputName = input.split("\\.")[0] + ".xml";
-        this.output = new File(outputName);
+    public CompilationEngine(File input , File output) throws IOException{
+        this.tokenizer =new JackTokenizer(input);
+        this.output = output;
         this.writer = new FileWriter(output);
     }
 
@@ -24,6 +22,7 @@ public class CompilationEngine {
         // write the class
         if(tokenizer.keyWord() == JackTokenizer.KeyWord.CLASS){
             this.writer.write("<class>");
+            this.writer.write("\n");
             // increase tab
             increaseTab();
             writeTag(tokenizer.getToken(), "keyword");
@@ -543,6 +542,7 @@ public class CompilationEngine {
     // tags the token with <open> and </close>
     private void writeTag(String word, String type) throws IOException {
         this.writer.write(tab + "<" + type + "> " + word + " </" + type + ">");
+        this.writer.write('\n');
     }
 
     // checks the symbol 
